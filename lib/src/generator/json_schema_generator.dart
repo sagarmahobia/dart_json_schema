@@ -113,7 +113,6 @@ class JsonSchemaGenerator {
           if (examples != null) 'examples': examples,
         };
       } else {
-        final referencedSchema = _generateSchemaForReferencedType(typeName, defs);
         properties[fieldName] = {
           '\$ref': '#/\$defs/$typeName',
           if (title != null) 'title': title,
@@ -255,18 +254,6 @@ class _ClassVisitor extends GeneralizingAstVisitor<void> {
     classes.add(node);
     super.visitClassDeclaration(node);
   }
-
-  @override
-  void visitFieldDeclaration(FieldDeclaration node) {
-    if (node.metadata.any((a) => a.name.name == 'Field')) {
-      fields.add(node);
-    }
-    super.visitFieldDeclaration(node);
-  }
-}
-
-class _FieldVisitor extends GeneralizingAstVisitor<void> {
-  final fields = <FieldDeclaration>[];
 
   @override
   void visitFieldDeclaration(FieldDeclaration node) {

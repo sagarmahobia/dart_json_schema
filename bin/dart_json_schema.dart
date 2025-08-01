@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:dart_json_schema/src/generator/json_schema_generator.dart';
 import 'package:dart_json_schema/src/config.dart';
-import 'package:path/path.dart' as p;
 
 const String version = '1.0.0-alpha-0.1';
 
