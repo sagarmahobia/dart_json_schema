@@ -1,0 +1,13 @@
+
+name: example
+description: An example project for dart_json_schema.
+version: 2.5.0
+
+environment:
+  sdk: '>=2.17.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dart_json_schema:
+    path: ../
