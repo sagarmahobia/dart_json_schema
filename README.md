@@ -17,7 +17,7 @@ Add `dart_json_schema` to your `pubspec.yaml`:
 
 ```yaml
 dev_dependencies:
-  dart_json_schema: ^1.0.0-alpha-0.1
+  dart_json_schema: ^0.0.2
 ```
 
 Then run:
@@ -176,7 +176,7 @@ Add to your `pubspec.yaml`:
 
 ```yaml
 dev_dependencies:
-  dart_json_schema: ^1.0.0-alpha-0.1
+  dart_json_schema: ^0.0.2
   build_runner: ^2.3.0
 
 scripts:

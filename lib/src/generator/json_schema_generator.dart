@@ -133,25 +133,6 @@ class JsonSchemaGenerator {
     };
   }
 
-  static Map<String, dynamic> _generateSchemaForReferencedType(
-      String typeName, Map<String, dynamic> defs) {
-    if (defs.containsKey(typeName)) {
-      return defs[typeName]!;
-    }
-
-    // This is a simplified approach. In a real-world scenario, you would
-    // need to resolve the file path for the typeName and parse it.
-    // For this example, we'll assume the referenced type is in the same file.
-
-    final newClassVisitor = _ClassVisitor();
-    // You would need to parse the file containing the referenced type here.
-    // For simplicity, we'll just create an empty schema.
-
-    final schema = _generateSchemaForClass(newClassVisitor, defs);
-    defs[typeName] = schema;
-    return schema;
-  }
-
   static bool _isPrimitiveType(String typeName) {
     return [
       'String',

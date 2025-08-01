@@ -8,7 +8,7 @@ A Dart/Flutter package that provides a simple `@Field` annotation for adding met
 
 ### **Package Name**: `dart_json_schema`
 ### **Package Name**: `dart_json_schema`
-### **Version**: `1.0.0-alpha-0.1`
+### **Version**: `0.0.2`
 ### **Platform Support**: Dart & Flutter
 
 ## Project Structure
@@ -292,7 +292,7 @@ dart run dart_json_schema:init
 #### Version Command
 ```bash
 dart run dart_json_schema:version
-# Outputs: dart_json_schema version 1.0.0-alpha-0.1
+# Outputs: dart_json_schema version 0.0.2
 ```
 
 ## Implementation Plan
