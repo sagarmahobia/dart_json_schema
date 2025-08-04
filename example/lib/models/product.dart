@@ -1,31 +1,69 @@
 
-import 'package:dart_json_schema/dart_json_schema.dart';
+import 'package:dart_json_schema_annotations/dart_json_schema_annotations.dart';
 
 class Product {
-  @Field(
-    title: "Product ID",
-    description: "Unique identifier for the product",
-    examples: [100, 200, 300]
+  @IntField(
+    description: 'Unique identifier for the product',
+    examples: [101, 102],
   )
   final int id;
 
-  @Field(
-    title: "Product Name",
-    description: "The name of the product",
-    examples: ["Laptop", "Smartphone"]
+  @StringField(
+    description: 'Name of the product',
+    examples: ['Laptop', 'Mouse'],
   )
   final String name;
 
-  @Field(
-    title: "Price",
-    description: "The price of the product",
-    examples: [999.99, 499.99]
+  @DoubleField(
+    description: 'Price of the product',
+    examples: [1200.50, 25.99],
   )
   final double price;
 
-  const Product({
+  @BooleanField(
+    description: 'Availability status of the product',
+    examples: [true, false],
+  )
+  final bool inStock;
+
+  @ListField(
+    description: 'List of tags associated with the product',
+    examples: [
+      ['electronics', 'computers'],
+      ['accessories']
+    ],
+  )
+  final List<String> tags;
+
+  @ObjectField(
+    description: 'Details about the product manufacturer',
+    examples: [
+      {'name': 'TechCorp', 'country': 'USA'},
+      {'name': 'GlobalGadgets', 'country': 'China'}
+    ],
+  )
+  final Map<String, dynamic> manufacturer;
+
+  @EnumField(
+    description: 'Category of the product',
+    examples: ['Electronics', 'Office', 'Home'],
+  )
+  final String category;
+
+  @DateTimeField(
+    description: 'Date and time when the product was listed',
+    examples: ['2023-01-15T10:00:00Z', '2023-03-20T14:30:00Z'],
+  )
+  final String listedAt;
+
+  Product({
     required this.id,
     required this.name,
     required this.price,
+    required this.inStock,
+    required this.tags,
+    required this.manufacturer,
+    required this.category,
+    required this.listedAt,
   });
 }

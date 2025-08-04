@@ -91,9 +91,20 @@ class JsonSchemaGenerator {
       final fieldName = field.fields.variables.first.name.lexeme;
       final annotations = field.metadata;
       
-      Annotation fieldAnnotation;
+      Annotation? fieldAnnotation;
       try {
-        fieldAnnotation = annotations.firstWhere((a) => a.name.name == 'Field');
+        // Check for any of the new typed annotations or the base Field annotation
+        fieldAnnotation = annotations.firstWhere((a) =>
+          a.name.name == 'Field' ||
+          a.name.name == 'IntField' ||
+          a.name.name == 'StringField' ||
+          a.name.name == 'DoubleField' ||
+          a.name.name == 'BooleanField' ||
+          a.name.name == 'ListField' ||
+          a.name.name == 'ObjectField' ||
+          a.name.name == 'EnumField' ||
+          a.name.name == 'DateTimeField'
+        );
       } catch (e) {
         continue;
       }
@@ -238,7 +249,17 @@ class _ClassVisitor extends GeneralizingAstVisitor<void> {
 
   @override
   void visitFieldDeclaration(FieldDeclaration node) {
-    if (node.metadata.any((a) => a.name.name == 'Field')) {
+    if (node.metadata.any((a) =>
+      a.name.name == 'Field' ||
+      a.name.name == 'IntField' ||
+      a.name.name == 'StringField' ||
+      a.name.name == 'DoubleField' ||
+      a.name.name == 'BooleanField' ||
+      a.name.name == 'ListField' ||
+      a.name.name == 'ObjectField' ||
+      a.name.name == 'EnumField' ||
+      a.name.name == 'DateTimeField'
+    )) {
       fields.add(node);
     }
     super.visitFieldDeclaration(node);
