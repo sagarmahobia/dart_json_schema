@@ -1,6 +1,5 @@
 import 'package:build/build.dart';
 import 'dart:async';
-import 'dart:convert';
 import 'package:path/path.dart' as p;
 import 'package:dart_json_schema/src/generator/json_schema_generator.dart';
 
