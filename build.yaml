@@ -1,0 +1,18 @@
+targets:
+  $default:
+    builders:
+      dart_json_schema:
+        generate_for:
+          - lib/**.dart
+
+builders:
+  dart_json_schema:
+    import: "package:dart_json_schema/builder.dart"
+    builder_factories: ["jsonSchemaBuilder"]
+    build_extensions: {".dart": [".schema.json", ".schema.yaml"]}
+    auto_apply: dependents
+    build_to: cache
+    defaults:
+      generate_for:
+        include:
+          - lib/**.dart

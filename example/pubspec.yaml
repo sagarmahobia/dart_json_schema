@@ -11,3 +11,6 @@ dependencies:
     sdk: flutter
   dart_json_schema:
     path: ../
+
+dev_dependencies:
+  build_runner: ^2.4.7
