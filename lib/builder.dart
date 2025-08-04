@@ -1,6 +1,6 @@
 import 'package:build/build.dart';
 import 'dart:async';
-import 'package:path/path.dart' as p;
+import 'dart:convert';
 import 'package:dart_json_schema/src/generator/json_schema_generator.dart';
 
 Builder jsonSchemaBuilder(BuilderOptions options) {
