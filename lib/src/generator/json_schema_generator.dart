@@ -11,7 +11,7 @@ import '../config.dart';
 class JsonSchemaGenerator {
   static Future<void> generateAllSchemas({
     String inputDir = 'lib/',
-    String outputDir = 'build/schemas',
+    String outputDir = 'json_schema',
   }) async {
     // Read project name from current directory's pubspec.yaml
     // If not found, fall back to plugin name from plugin's pubspec.yaml

@@ -136,7 +136,7 @@ class JsonSchemaGenerator {
   /// Scan directory and generate all schemas
   static Future<void> generateAllSchemas({
     String inputDir = 'lib/',
-    String outputDir = 'build/schemas',
+    String outputDir = 'json_schema',
   });
   
   /// Generate JSON schema for a single model file
@@ -151,7 +151,7 @@ dart_json_schema:
   input_directories:
     - lib/models/
     - lib/entities/
-  output_directory: build/schemas/
+  output_directory: json_schema/
   file_naming: snake_case  # or camelCase
   include_metadata: true
   watch_mode: false
@@ -265,7 +265,7 @@ scripts:
 dart run dart_json_schema:generate [options] [files...]
 
 Options:
-  -o, --output          Output directory (default: schemas/)
+  -o, --output          Output directory (default: json_schema/)
   -w, --watch           Watch for changes and regenerate
   -c, --config          Config file path (default: dart_json_schema.yaml)
   -v, --verbose         Verbose output
@@ -333,8 +333,8 @@ dart run dart_json_schema:version
 # Run generation command
 dart run dart_json_schema:generate
 
-# JSON schemas are generated in build/schemas/ directory
-# build/schemas/user.schema.json
+# JSON schemas are generated in json_schema/ directory
+# json_schema/user.schema.json
 
 # Use schemas for API docs, validation, OpenAPI specs, etc.
 ```
@@ -353,7 +353,7 @@ jobs:
       - uses: dart-lang/setup-dart@v1
       - run: dart pub get
       - run: dart run dart_json_schema:generate
-      - run: git diff --exit-code build/schemas/  # Ensure schemas are up to date
+      - run: git diff --exit-code json_schema/  # Ensure schemas are up to date
 ```
 
 ## Testing Strategy
