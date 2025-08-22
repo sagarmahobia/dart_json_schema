@@ -41,7 +41,7 @@ ArgParser generateCommandParser() {
   return ArgParser()
     ..addOption('output', abbr: 'o', 
         help: 'Output directory', 
-        defaultsTo: 'build/schemas')
+        defaultsTo: 'json_schema')
     ..addFlag('watch', abbr: 'w', 
         help: 'Watch for changes and regenerate',
         defaultsTo: false)
@@ -161,7 +161,7 @@ dart_json_schema:
   input_directories:
     - lib/models/
     - lib/entities/
-  output_directory: schemas/
+  output_directory: json_schema/
   file_naming: snake_case
   include_metadata: true
   watch_mode: false
