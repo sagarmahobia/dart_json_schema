@@ -19,10 +19,10 @@ Add these dependencies to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  dart_json_schema_annotations: ^2.0.0
+  dart_json_schema_annotations: ^2.1.0
 
 dev_dependencies:
-  dart_json_schema: ^2.0.0
+  dart_json_schema: ^2.1.0
   build_runner: ^2.4.0
 ```
 
