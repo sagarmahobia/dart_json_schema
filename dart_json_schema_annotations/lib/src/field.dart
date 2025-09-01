@@ -1,8 +1,8 @@
-/// Base class for all field annotations.
+/// A simple annotation for defining JSON schema properties.
 ///
 /// This class provides common properties for defining JSON schema fields,
 /// such as [title], [description], and [examples].
-class Field<T> {
+class Field {
   /// A short, human-readable title for the field.
   final String? title;
 
@@ -10,7 +10,7 @@ class Field<T> {
   final String? description;
 
   /// A list of example values for the field.
-  final List<T>? examples;
+  final List<dynamic>? examples;
 
   /// Creates a new [Field] instance.
   const Field({

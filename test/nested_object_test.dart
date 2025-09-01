@@ -16,7 +16,7 @@ void main() {
       );
       
       final pluginName = await Config.readPubspecName('pubspec.yaml') ?? 'dart_json_schema';
-      final orderSchema = File('${outputDir.path}/${pluginName}/schemas/order.schema.json');
+      final orderSchema = File('${outputDir.path}/order.schema.json');
       
       expect(await orderSchema.exists(), isTrue);
       

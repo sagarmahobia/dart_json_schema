@@ -3,7 +3,7 @@ import 'package:args/args.dart';
 import 'package:dart_json_schema/src/generator/json_schema_generator.dart';
 import 'package:dart_json_schema/src/config.dart';
 
-const String version = '0.0.2';
+const String version = '2.0.0';
 
 void main(List<String> arguments) async {
   final parser = ArgParser()
@@ -134,11 +134,13 @@ Future<void> handleGenerateCommand(ArgResults results) async {
       await JsonSchemaGenerator.generateAllSchemas(
         inputDir: inputDir,
         outputDir: outputDir,
+        configPath: configPath,
       );
     } else {
       await JsonSchemaGenerator.generateAllSchemas(
         inputDir: inputDir,
         outputDir: outputDir,
+        configPath: configPath,
       );
       print('Schema generation complete.');
     }

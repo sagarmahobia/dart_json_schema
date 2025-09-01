@@ -1,38 +1,37 @@
-
 import 'package:dart_json_schema_annotations/dart_json_schema_annotations.dart';
 
 class User {
-  @IntField(
+  @Field(
     description: 'Unique identifier for the user',
     examples: [1, 2, 3],
   )
   final int id;
 
-  @StringField(
+  @Field(
     description: 'The user\'s full name',
     examples: ['John Doe', 'Jane Smith'],
   )
   final String name;
 
-  @StringField(
+  @Field(
     description: 'User\'s email address',
     examples: ['john@example.com', 'jane@example.com'],
   )
   final String email;
 
-  @IntField(
+  @Field(
     description: 'User\'s age in years',
     examples: [25, 30, 45],
   )
   final int age;
 
-  @BooleanField(
+  @Field(
     description: 'Whether the user account is active',
     examples: [true, false],
   )
   final bool isActive;
 
-  @DateTimeField(
+  @Field(
     description: 'Date when the user registered',
     examples: ['2023-01-15T10:00:00Z', '2023-03-20T14:30:00Z'],
   )
