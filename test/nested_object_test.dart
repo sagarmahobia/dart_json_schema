@@ -1,7 +1,6 @@
 
 import 'dart:io';
 import 'package:dart_json_schema/src/generator/json_schema_generator.dart';
-import 'package:dart_json_schema/src/config.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -15,7 +14,6 @@ void main() {
         outputDir: outputDir.path,
       );
       
-      final pluginName = await Config.readPubspecName('pubspec.yaml') ?? 'dart_json_schema';
       final orderSchema = File('${outputDir.path}/order.schema.json');
       
       expect(await orderSchema.exists(), isTrue);
