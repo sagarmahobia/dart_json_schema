@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:dart_json_schema/src/generator/json_schema_generator.dart';
-import 'package:dart_json_schema/src/config.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -17,9 +16,8 @@ void main() {
       );
       
       // Check that schema files were created
-      final pluginName = await Config.readPubspecName('pubspec.yaml') ?? 'dart_json_schema';
-      final userSchema = File('${outputDir.path}/${pluginName}/schemas/user.schema.json');
-      final productSchema = File('${outputDir.path}/${pluginName}/schemas/product.schema.json');
+      final userSchema = File('${outputDir.path}/user.schema.json');
+      final productSchema = File('${outputDir.path}/product.schema.json');
       
       expect(await userSchema.exists(), isTrue);
       expect(await productSchema.exists(), isTrue);

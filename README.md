@@ -352,3 +352,7 @@ For the User class above, the generated JSON schema will look like:
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
+
+## Publishing
+
+For information about publishing these packages to pub.dev, see the [PUBLISHING_GUIDE.md](PUBLISHING_GUIDE.md) file.

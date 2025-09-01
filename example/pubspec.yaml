@@ -1,6 +1,7 @@
 name: example
 description: An example project for dart_json_schema.
 version: 2.5.0
+publish_to: none
 
 environment:
   sdk: '>=2.17.0 <4.0.0'
