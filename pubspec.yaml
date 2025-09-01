@@ -14,8 +14,7 @@ dependencies:
   yaml: ^3.1.0
   args: ^2.4.0
   glob: ^2.1.0
-  dart_json_schema_annotations:
-    path: ./dart_json_schema_annotations
+  dart_json_schema_annotations: ^2.1.0
   build: ^2.4.0
 
 dev_dependencies:

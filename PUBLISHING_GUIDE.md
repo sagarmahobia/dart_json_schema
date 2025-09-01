@@ -49,7 +49,7 @@ dependencies:
 **Important**: Switch back to version dependencies before publishing:
 ```yaml
 dependencies:
-  dart_json_schema_annotations: ^1.0.0  # Latest published version
+  dart_json_schema_annotations: ^2.1.0  # Latest published version
 ```
 
 ## Pre-Publishing Checklist
