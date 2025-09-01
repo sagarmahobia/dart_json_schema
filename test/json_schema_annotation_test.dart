@@ -71,7 +71,15 @@ class UserModel {
       expect(schemaContent, contains('"description": "User bio with custom description"'));
       expect(schemaContent, contains('"examples": ['));
       
-      // Check required fields (nullable fields should not be required)\n      expect(schemaContent, contains('\"required\": ['));\n      expect(schemaContent, contains('\"id\"'));\n      expect(schemaContent, contains('\"name\"'));\n      expect(schemaContent, contains('\"email\"'));\n      expect(schemaContent, contains('\"age\"'));\n      expect(schemaContent, contains('\"isActive\"'));\n      // bio is nullable, so it should not be in required fields\n      expect(schemaContent, isNot(contains('\"required\": [\\n    \"id\",\\n    \"name\",\\n    \"email\",\\n    \"age\",\\n    \"isActive\",\\n    \"bio\"')));
+      // Check required fields (nullable fields should not be required)
+      expect(schemaContent, contains('"required": ['));
+      expect(schemaContent, contains('"id"'));
+      expect(schemaContent, contains('"name"'));
+      expect(schemaContent, contains('"email"'));
+      expect(schemaContent, contains('"age"'));
+      expect(schemaContent, contains('"isActive"'));
+      // bio is nullable, so it should not be in required fields
+      expect(schemaContent, isNot(contains('"required": [\n    "id",\n    "name",\n    "email",\n    "age",\n    "isActive",\n    "bio"')));
       
     } finally {
       if (await tempDir.exists()) {
@@ -107,6 +115,44 @@ class NoAnnotationModel {
       final schemaFile = File('${outputDir.path}/no_annotation_model.schema.json');
       
       // No schema should be generated
+      expect(await schemaFile.exists(), isFalse);
+      
+    } finally {
+      if (await tempDir.exists()) {
+        await tempDir.delete(recursive: true);
+      }
+    }
+  });
+
+  test('Generator ignores classes with dynamic fields but without @JsonSchema annotation', () async {
+    final tempDir = Directory.systemTemp.createTempSync('dart_json_schema_test');
+    final outputDir = Directory('${tempDir.path}/output');
+    
+    try {
+      // Create a test file with dynamic fields but without @JsonSchema annotation
+      final testFile = File('${tempDir.path}/dynamic_no_annotation_model.dart');
+      await testFile.writeAsString('''
+class DynamicNoAnnotationModel {
+  final int id;
+  final dynamic dynamicField; // This should be ignored
+  final String name;
+
+  const DynamicNoAnnotationModel({
+    required this.id,
+    required this.dynamicField,
+    required this.name,
+  });
+}
+''');
+
+      await JsonSchemaGenerator.generateAllSchemas(
+        inputDir: tempDir.path,
+        outputDir: outputDir.path,
+      );
+      
+      final schemaFile = File('${outputDir.path}/dynamic_no_annotation_model.schema.json');
+      
+      // No schema should be generated because the class doesn't have @JsonSchema annotation
       expect(await schemaFile.exists(), isFalse);
       
     } finally {
