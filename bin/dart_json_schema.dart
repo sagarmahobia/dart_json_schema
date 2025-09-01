@@ -19,7 +19,7 @@ void main(List<String> arguments) async {
     }
 
     final results = parser.parse(arguments);
-    
+
     if (results.command?.name == 'generate') {
       await handleGenerateCommand(results.command!);
     } else if (results.command?.name == 'init') {
@@ -39,26 +39,26 @@ void main(List<String> arguments) async {
 
 ArgParser generateCommandParser() {
   return ArgParser()
-    ..addOption('output', abbr: 'o', 
-        help: 'Output directory', 
+    ..addOption('output', abbr: 'o',
+        help: 'Output directory',
         defaultsTo: 'build/schemas')
-    ..addFlag('watch', abbr: 'w', 
+    ..addFlag('watch', abbr: 'w',
         help: 'Watch for changes and regenerate',
         defaultsTo: false)
-    ..addOption('config', abbr: 'c', 
-        help: 'Config file path', 
+    ..addOption('config', abbr: 'c',
+        help: 'Config file path',
         defaultsTo: 'dart_json_schema.yaml')
-    ..addFlag('verbose', abbr: 'v', 
+    ..addFlag('verbose', abbr: 'v',
         help: 'Verbose output',
         defaultsTo: false)
-    ..addFlag('help', abbr: 'h', 
+    ..addFlag('help', abbr: 'h',
         help: 'Show help',
         negatable: false)
-    ..addFlag('include-private', 
+    ..addFlag('include-private',
         help: 'Include private fields',
         defaultsTo: false)
-    ..addOption('format', 
-        help: 'Output format (json|yaml)', 
+    ..addOption('format',
+        help: 'Output format (json|yaml)',
         defaultsTo: 'json')
     ..addOption('schema-version',
         help: 'JSON Schema version',
@@ -69,14 +69,14 @@ ArgParser generateCommandParser() {
 
 ArgParser initCommandParser() {
   return ArgParser()
-    ..addFlag('help', abbr: 'h', 
+    ..addFlag('help', abbr: 'h',
         help: 'Show help',
         negatable: false);
 }
 
 ArgParser versionCommandParser() {
   return ArgParser()
-    ..addFlag('help', abbr: 'h', 
+    ..addFlag('help', abbr: 'h',
         help: 'Show help',
         negatable: false);
 }
@@ -102,7 +102,7 @@ Future<void> handleGenerateCommand(ArgResults results) async {
   final inputPaths = results.rest;
 
   print('Generating JSON schemas...');
-  
+
   if (verbose) {
     print('Output directory: $outputDir');
     print('Watch mode: $watchMode');
@@ -118,7 +118,7 @@ Future<void> handleGenerateCommand(ArgResults results) async {
   try {
     // Load configuration
     final config = await Config.loadFromFile(configPath);
-    
+
     // Determine input directory
     String inputDir = 'lib/';
     if (inputPaths.isNotEmpty) {
