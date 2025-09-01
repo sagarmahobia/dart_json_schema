@@ -110,6 +110,11 @@ class JsonSchemaGenerator {
       final type = field.fields.type;
       final typeName = type?.toSource() ?? 'any';
 
+      // Check for unsupported dynamic type
+      if (typeName == 'dynamic') {
+        throw Exception('Dynamic type is not supported for field: $fieldName. Use a specific type instead.');
+      }
+
       if (_isPrimitiveType(typeName)) {
         properties[fieldName] = {
           'type': _getDartType(type),
