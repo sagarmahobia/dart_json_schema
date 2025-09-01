@@ -6,20 +6,14 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:path/path.dart' as p;
-import '../config.dart';
 
 class JsonSchemaGenerator {
   static Future<void> generateAllSchemas({
     String inputDir = 'lib/',
     String outputDir = 'build/schemas',
   }) async {
-    // Read project name from current directory's pubspec.yaml
-    // If not found, fall back to plugin name from plugin's pubspec.yaml
-    String? projectName = await Config.readPubspecName('pubspec.yaml');
-    if (projectName == null || projectName.isEmpty) {
-      projectName = await Config.readPubspecName(p.join(p.current, '..', 'pubspec.yaml')) ?? 'dart_json_schema';
-    }
-    final actualOutputDir = p.join(outputDir, projectName, 'schemas');
+    // Use the output directory directly without adding project name subdirectory
+    final actualOutputDir = outputDir;
         
     final input = Directory(inputDir);
     final output = Directory(actualOutputDir);

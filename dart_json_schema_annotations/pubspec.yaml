@@ -1,0 +1,15 @@
+name: dart_json_schema_annotations
+description: Annotations for the dart_json_schema package. Provides the @Field annotation for adding metadata to model fields for JSON schema generation.
+version: 1.0.1
+repository: https://github.com/sagarmahobia/dart_json_schema
+
+environment:
+  sdk: ^3.7.2
+
+# Add regular dependencies here.
+# dependencies:
+  # path: ^1.8.0
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.24.0

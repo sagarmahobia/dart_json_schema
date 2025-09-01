@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Order",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "Unique identifier for the order",
+      "examples": [
+        1001,
+        1002,
+        1003
+      ]
+    },
+    "user": {
+      "$ref": "#/$defs/User",
+      "description": "The user who placed the order",
+      "examples": [
+        "{'id' : 1, 'name' : 'John Doe', 'email' : 'john@example.com', 'age' : 30, 'isActive' : true, 'registrationDate' : '2023-01-15T10:00:00Z'}"
+      ]
+    },
+    "orderDate": {
+      "type": "string",
+      "description": "Date and time when the order was placed",
+      "examples": [
+        "2023-01-15T10:00:00Z",
+        "2023-03-20T14:30:00Z"
+      ]
+    },
+    "totalAmount": {
+      "type": "number",
+      "description": "Total amount of the order",
+      "examples": [
+        299.99,
+        599.5
+      ]
+    },
+    "products": {
+      "$ref": "#/$defs/List<Map<String, dynamic>>",
+      "description": "List of products in the order",
+      "examples": [
+        [
+          "{'id' : 1, 'name' : 'Laptop', 'price' : 999.99, 'inStock' : true}"
+        ]
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "user",
+    "orderDate",
+    "totalAmount",
+    "products"
+  ],
+  "$defs": {}
+}
