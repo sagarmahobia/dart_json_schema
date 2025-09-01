@@ -1,6 +1,6 @@
 name: dart_json_schema
 description: A Dart/Flutter package that provides a simple @Field annotation for adding metadata to model fields and generates standard JSON schemas using a command-line tool.
-version: 1.0.0
+version: 2.0.0
 homepage: https://github.com/sagarmahobia/dart_json_schema
 
 environment:
@@ -13,7 +13,8 @@ dependencies:
   path: ^1.8.0
   yaml: ^3.1.0
   args: ^2.4.0
-  dart_json_schema_annotations: ^1.0.0
+  dart_json_schema_annotations:
+    path: ./dart_json_schema_annotations
   build: ^2.4.0
 
 dev_dependencies:

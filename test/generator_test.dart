@@ -34,7 +34,7 @@ void main() {
       expect(productSchemaContent, contains(r'"$schema": "https://json-schema.org/draft/2020-12/schema"'));
       expect(productSchemaContent, contains('"title": "Product"'));
       expect(productSchemaContent, contains('"type": "object"'));
-      expect(productSchemaContent, contains(r'"$defs": {}'));
+      expect(productSchemaContent, contains(r'"$defs": {'));
     } finally {
       // Clean up
       if (await tempDir.exists()) {

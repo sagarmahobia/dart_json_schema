@@ -1,4 +1,10 @@
 
+## 2.0.0
+
+- **Breaking Change**: Simplified to use single Field annotation without generics
+- Updated JSON schema generator to work with simplified annotation system
+- Removed support for typed field annotations (IntField, StringField, etc.)
+
 ## 1.0.0
 
 - Stable release with typed field annotations

@@ -52,5 +52,16 @@
     "totalAmount",
     "products"
   ],
-  "$defs": {}
+  "$defs": {
+    "User": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "List<Map<String, dynamic>>": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  }
 }

@@ -118,6 +118,17 @@ class JsonSchemaGenerator {
           if (examples != null) 'examples': examples,
         };
       } else {
+        // Add the type definition to $defs if it's not already there
+        if (!defs.containsKey(typeName)) {
+          // For now, we'll create a placeholder. In a more complete implementation,
+          // we would generate the full schema for the referenced type.
+          defs[typeName] = {
+            'type': 'object',
+            'properties': {},
+            'required': [],
+          };
+        }
+        
         properties[fieldName] = {
           '\$ref': '#/\$defs/$typeName',
           if (title != null) 'title': title,
@@ -244,15 +255,7 @@ class _ClassVisitor extends GeneralizingAstVisitor<void> {
   @override
   void visitFieldDeclaration(FieldDeclaration node) {
     if (node.metadata.any((a) =>
-      a.name.name == 'Field' ||
-      a.name.name == 'IntField' ||
-      a.name.name == 'StringField' ||
-      a.name.name == 'DoubleField' ||
-      a.name.name == 'BooleanField' ||
-      a.name.name == 'ListField' ||
-      a.name.name == 'ObjectField' ||
-      a.name.name == 'EnumField' ||
-      a.name.name == 'DateTimeField'
+      a.name.name == 'Field'
     )) {
       fields.add(node);
     }

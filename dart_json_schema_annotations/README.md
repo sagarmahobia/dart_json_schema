@@ -4,10 +4,9 @@ Annotations for the `dart_json_schema` package. This package provides the `@Fiel
 
 ## Features
 
-- **`@Field` Annotation**: Decorate your Dart model fields with `@Field` to include metadata such as `name`, `description`, `example`, `defaultValue`, `minimum`, `maximum`, `minLength`, `maxLength`, `pattern`, `format`, `enum`, `readOnly`, `writeOnly`, and `deprecated`. This metadata is crucial for generating accurate and descriptive JSON schemas.
+- **`@Field` Annotation**: Decorate your Dart model fields with `@Field` to include metadata such as `title`, `description`, and `examples`. This metadata is crucial for generating accurate and descriptive JSON schemas.
 - **JSON Schema Generation**: Works in conjunction with the `dart_json_schema` package to enhance the generated schemas with detailed field-level information.
-
-- **Typed Field Annotations**: For convenience and type safety, the package also provides specific field annotations for common Dart types, such as `@IntField`, `@StringField`, `@DoubleField`, `@BooleanField`, `@ListField`, `@ObjectField`, `@EnumField`, and `@DateTimeField`. These extend the base `@Field` annotation and can be used to clearly indicate the expected type of the field in the JSON schema.
+- **Simplified API**: Only one annotation to learn and use, making it easier to add metadata to your model fields.
 
 ## Getting started
 
@@ -15,44 +14,44 @@ To use this package, add it as a dependency in your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  dart_json_schema_annotations: ^1.0.0
+  dart_json_schema_annotations: ^2.0.0
 ```
 
 Then, run `dart pub get` to fetch the package.
 
 ## Usage
 
-Import the package and use the `@Field` annotation or the more specific typed field annotations on your model properties:
+Import the package and use the `@Field` annotation on your model properties:
 
 ```dart
 import 'package:dart_json_schema_annotations/dart_json_schema_annotations.dart';
 
 class Product {
-  @IntField(
+  @Field(
     description: 'Unique identifier for the product',
     examples: [101, 102],
   )
   final int id;
 
-  @StringField(
+  @Field(
     description: 'Name of the product',
     examples: ['Laptop', 'Mouse'],
   )
   final String name;
 
-  @DoubleField(
+  @Field(
     description: 'Price of the product',
     examples: [1200.50, 25.99],
   )
   final double price;
 
-  @BooleanField(
+  @Field(
     description: 'Availability status of the product',
     examples: [true, false],
   )
   final bool inStock;
 
-  @ListField(
+  @Field(
     description: 'List of tags associated with the product',
     examples: [
       ['electronics', 'computers'],
@@ -61,7 +60,7 @@ class Product {
   )
   final List<String> tags;
 
-  @ObjectField(
+  @Field(
     description: 'Details about the product manufacturer',
     examples: [
       {'name': 'TechCorp', 'country': 'USA'},
@@ -70,13 +69,13 @@ class Product {
   )
   final Map<String, dynamic> manufacturer;
 
-  @EnumField(
+  @Field(
     description: 'Category of the product',
     examples: ['Electronics', 'Office', 'Home'],
   )
   final String category;
 
-  @DateTimeField(
+  @Field(
     description: 'Date and time when the product was listed',
     examples: ['2023-01-15T10:00:00Z', '2023-03-20T14:30:00Z'],
   )

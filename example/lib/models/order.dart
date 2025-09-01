@@ -1,15 +1,14 @@
-
 import 'package:dart_json_schema_annotations/dart_json_schema_annotations.dart';
 import 'user.dart';
 
 class Order {
-  @IntField(
+  @Field(
     description: 'Unique identifier for the order',
     examples: [1001, 1002, 1003],
   )
   final int id;
 
-  @ObjectField(
+  @Field(
     description: 'The user who placed the order',
     examples: [
       {
@@ -24,19 +23,19 @@ class Order {
   )
   final User user;
 
-  @DateTimeField(
+  @Field(
     description: 'Date and time when the order was placed',
     examples: ['2023-01-15T10:00:00Z', '2023-03-20T14:30:00Z'],
   )
   final String orderDate;
 
-  @DoubleField(
+  @Field(
     description: 'Total amount of the order',
     examples: [299.99, 599.50],
   )
   final double totalAmount;
 
-  @ListField(
+  @Field(
     description: 'List of products in the order',
     examples: [
       [

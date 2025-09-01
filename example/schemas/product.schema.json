@@ -84,5 +84,16 @@
     "category",
     "listedAt"
   ],
-  "$defs": {}
+  "$defs": {
+    "List<String>": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    },
+    "Map<String, dynamic>": {
+      "type": "object",
+      "properties": {},
+      "required": []
+    }
+  }
 }

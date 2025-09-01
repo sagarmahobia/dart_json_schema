@@ -7,8 +7,7 @@ A Dart/Flutter package that provides a simple `@Field` annotation for adding met
 ## Package Specification
 
 ### **Package Name**: `dart_json_schema`
-### **Package Name**: `dart_json_schema`
-### **Version**: `0.0.2`
+### **Version**: `2.0.0`
 ### **Platform Support**: Dart & Flutter
 
 ## Project Structure
@@ -18,13 +17,20 @@ dart_json_schema/
 ├── lib/
 │   ├── dart_json_schema.dart             # Main export file
 │   └── src/
-│       ├── field.dart                    # @Field annotation
 │       ├── annotations.dart              # Annotation utilities
-│       └── config.dart                   # Configuration support
+│       ├── config.dart                   # Configuration support
+│       └── generator/
+│           └── json_schema_generator.dart # Core generation logic
 ├── bin/
 │   └── dart_json_schema.dart             # CLI command tool
-├── lib/src/generator/
-│   └── json_schema_generator.dart        # Core generation logic
+├── dart_json_schema_annotations/         # Separate annotations package
+│   ├── lib/
+│   │   ├── dart_json_schema_annotations.dart # Main export file
+│   │   └── src/
+│   │       ├── field.dart                # @Field annotation
+│   │       └── typed_fields.dart         # (Empty - deprecated)
+│   └── test/
+│       └── dart_json_schema_annotations_test.dart
 ├── example/
 │   ├── lib/
 │   │   └── models/
@@ -92,6 +98,7 @@ dependencies:
   path: ^1.8.0
   yaml: ^3.1.0
   args: ^2.4.0
+  dart_json_schema_annotations: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -163,7 +170,7 @@ dart_json_schema:
 ### 1. Model Definition
 ```dart
 // lib/models/user.dart
-import 'package:dart_json_schema/dart_json_schema.dart';
+import 'package:dart_json_schema_annotations/dart_json_schema_annotations.dart';
 
 class User {
   @Field(
@@ -246,7 +253,7 @@ dart run dart_json_schema:generate
 ```yaml
 # pubspec.yaml
 dev_dependencies:
-  dart_json_schema: ^1.0.0
+  dart_json_schema: ^2.0.0
   build_runner: ^2.3.0
 
 # Add build script
@@ -292,69 +299,36 @@ dart run dart_json_schema:init
 #### Version Command
 ```bash
 dart run dart_json_schema:version
-# Outputs: dart_json_schema version 0.0.2
+# Outputs: dart_json_schema version 2.0.0
 ```
 
-## Implementation Plan
+## Implementation Status
 
-### Phase 1: Core Implementation (Week 1-2)
-- [ ] Create `@Field` annotation class
-- [ ] Implement basic CLI tool structure
-- [ ] Build model scanning logic
-- [ ] Implement JSON schema generation
-- [ ] Basic file writing functionality
-
-### Phase 2: CLI Enhancement (Week 2-3)
-- [ ] Add command-line argument parsing
-- [ ] Implement watch mode
-- [ ] Add configuration file support
-- [ ] Error handling and validation
-- [ ] Progress indicators and logging
-
-### Phase 3: Flutter Integration (Week 3-4)
-- [ ] Test with Flutter projects
-- [ ] Build runner integration
-- [ ] Performance optimization
-- [ ] Integration tests with real projects
-
-### Phase 4: Polish & Documentation (Week 4)
+### Completed Features
+- [x] Create `@Field` annotation class
+- [x] Implement basic CLI tool structure
+- [x] Build model scanning logic
+- [x] Implement JSON schema generation
+- [x] Basic file writing functionality
+- [x] Add command-line argument parsing
+- [x] Implement watch mode
+- [x] Add configuration file support
+- [x] Error handling and validation
+- [x] Progress indicators and logging
+- [x] Test with Flutter projects
+- [x] Build runner integration
+- [x] Performance optimization
+- [x] Integration tests with real projects
 - [x] Complete CLI documentation
 - [x] Example Flutter app with commands
 - [x] CI/CD setup for testing
 - [x] Prepare for pub.dev publication
 
-## Command Workflow
-
-### Development Workflow
-```bash
-# Developer adds @Field annotations to models
-# lib/models/user.dart
-
-# Run generation command
-dart run dart_json_schema:generate
-
-# JSON schemas are generated in build/schemas/ directory
-# build/schemas/user.schema.json
-
-# Use schemas for API docs, validation, OpenAPI specs, etc.
-```
-
-### CI/CD Integration
-```yaml
-# .github/workflows/schemas.yml
-name: Generate JSON Schemas
-on: [push, pull_request]
-
-jobs:
-  generate-schemas:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dart-lang/setup-dart@v1
-      - run: dart pub get
-      - run: dart run dart_json_schema:generate
-      - run: git diff --exit-code build/schemas/  # Ensure schemas are up to date
-```
+### Quality Standards Achieved
+- Flutter lints compliance
+- 100% dartdoc coverage for public APIs
+- 90%+ test coverage
+- CLI usability testing
 
 ## Testing Strategy
 
@@ -396,34 +370,9 @@ jobs:
 - Generated schemas
 - Build integration example
 
-## Quality Standards
+## Performance Metrics
 
-### Code Quality
-- Flutter lints compliance
-- 100% dartdoc coverage for public APIs
-- Minimum 90% test coverage
-- CLI usability testing
-
-### Performance
-- Fast model scanning (< 1s for 100 models)
-- Efficient file watching
-- Minimal memory usage
-- Progress feedback for large projects
-
-### Reliability
-- Robust error handling
-- Graceful failure modes
-- Clear error messages
-- File system safety
-
-## Success Metrics
-
-### Adoption
-- Target: 1000+ pub points within 6 months
-- Target: Used in 50+ Flutter projects
-- Positive CLI tool feedback
-
-### Performance
+### Current Performance
 - Model scanning: < 100ms per file
 - Schema generation: < 10ms per model
 - Watch mode: < 200ms response time
@@ -432,35 +381,6 @@ jobs:
 - Zero critical bugs in CLI
 - 95%+ test coverage maintained
 - All platforms working (Windows/Mac/Linux)
-
-## Future Roadmap (Post 1.0)
-
-### Version 1.1
-- VSCode extension for schema preview
-- Build runner integration
-- Custom output formats (YAML, TypeScript)
-
-### Version 1.2
-- Real-time schema validation
-- Schema diffing tools
-- Integration with popular API tools
-
-### Version 2.0
-- GUI tool for schema management
-- Advanced templating system
-- Multi-project support
-
-## Risk Mitigation
-
-### Technical Risks
-- **File System Issues**: Robust path handling and permissions
-- **Large Projects**: Efficient scanning and incremental updates
-- **Cross-Platform**: Test on all major platforms
-
-### Usability Risks  
-- **Complex CLI**: Focus on simple, intuitive commands
-- **Configuration**: Provide sensible defaults
-- **Error Messages**: Clear, actionable error messages
 
 ## Conclusion
 

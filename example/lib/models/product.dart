@@ -1,32 +1,31 @@
-
 import 'package:dart_json_schema_annotations/dart_json_schema_annotations.dart';
 
 class Product {
-  @IntField(
+  @Field(
     description: 'Unique identifier for the product',
     examples: [101, 102],
   )
   final int id;
 
-  @StringField(
+  @Field(
     description: 'Name of the product',
     examples: ['Laptop', 'Mouse'],
   )
   final String name;
 
-  @DoubleField(
+  @Field(
     description: 'Price of the product',
     examples: [1200.50, 25.99],
   )
   final double price;
 
-  @BooleanField(
+  @Field(
     description: 'Availability status of the product',
     examples: [true, false],
   )
   final bool inStock;
 
-  @ListField(
+  @Field(
     description: 'List of tags associated with the product',
     examples: [
       ['electronics', 'computers'],
@@ -35,7 +34,7 @@ class Product {
   )
   final List<String> tags;
 
-  @ObjectField(
+  @Field(
     description: 'Details about the product manufacturer',
     examples: [
       {'name': 'TechCorp', 'country': 'USA'},
@@ -44,13 +43,13 @@ class Product {
   )
   final Map<String, dynamic> manufacturer;
 
-  @EnumField(
+  @Field(
     description: 'Category of the product',
     examples: ['Electronics', 'Office', 'Home'],
   )
   final String category;
 
-  @DateTimeField(
+  @Field(
     description: 'Date and time when the product was listed',
     examples: ['2023-01-15T10:00:00Z', '2023-03-20T14:30:00Z'],
   )
