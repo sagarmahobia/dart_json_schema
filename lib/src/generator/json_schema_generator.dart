@@ -56,7 +56,9 @@ class JsonSchemaGenerator {
     final classVisitor = _ClassVisitor();
     parseResult.unit.visitChildren(classVisitor);
 
-    if (classVisitor.className == null) {
+    // Only generate schema if the class should generate a schema or has @Field annotations
+    if (classVisitor.className == null || 
+        (!classVisitor.shouldGenerateSchema && classVisitor.fields.isEmpty)) {
       return null;
     }
 
@@ -85,34 +87,30 @@ class JsonSchemaGenerator {
       final fieldName = field.fields.variables.first.name.lexeme;
       final annotations = field.metadata;
       
+      // Get field annotation if it exists, otherwise use null
       Annotation? fieldAnnotation;
       try {
-        // Check for any of the new typed annotations or the base Field annotation
-        fieldAnnotation = annotations.firstWhere((a) =>
-          a.name.name == 'Field' ||
-          a.name.name == 'IntField' ||
-          a.name.name == 'StringField' ||
-          a.name.name == 'DoubleField' ||
-          a.name.name == 'BooleanField' ||
-          a.name.name == 'ListField' ||
-          a.name.name == 'ObjectField' ||
-          a.name.name == 'EnumField' ||
-          a.name.name == 'DateTimeField'
-        );
+        fieldAnnotation = annotations.firstWhere((a) => a.name.name == 'Field');
       } catch (e) {
-        continue;
+        // No @Field annotation found, that's OK for @JsonSchema classes
       }
 
-      final title = _getArgument(fieldAnnotation, 'title');
-      final description = _getArgument(fieldAnnotation, 'description');
-      final examples = _getArgument(fieldAnnotation, 'examples');
+      final title = fieldAnnotation != null ? _getArgument(fieldAnnotation, 'title') : null;
+      final description = fieldAnnotation != null ? _getArgument(fieldAnnotation, 'description') : null;
+      final examples = fieldAnnotation != null ? _getArgument(fieldAnnotation, 'examples') : null;
 
       final type = field.fields.type;
       final typeName = type?.toSource() ?? 'any';
 
       // Check for unsupported dynamic type
       if (typeName == 'dynamic') {
-        throw Exception('Dynamic type is not supported for field: $fieldName. Use a specific type instead.');
+        // Skip dynamic fields
+        continue;
+      }
+
+      // Skip unsupported types
+      if (typeName == 'Function' || typeName == 'Future' || typeName.startsWith('Future<')) {
+        continue;
       }
 
       if (_isPrimitiveType(typeName)) {
@@ -142,6 +140,7 @@ class JsonSchemaGenerator {
         };
       }
 
+      // Fields are required unless they are nullable
       if (type?.toSource().endsWith('?') == false) {
         requiredFields.add(fieldName);
       }
@@ -246,23 +245,36 @@ class JsonSchemaGenerator {
 }
 
 class _ClassVisitor extends GeneralizingAstVisitor<void> {
-  final classes = <ClassDeclaration>[];
+  ClassDeclaration? currentClass;
   final fields = <FieldDeclaration>[];
+  bool shouldGenerateSchema = false;
 
-  String? get className => classes.isNotEmpty ? classes.first.name.toString() : null;
+  String? get className => currentClass?.name.toString();
 
   @override
   void visitClassDeclaration(ClassDeclaration node) {
-    classes.add(node);
+    currentClass = node;
+    // Check if the class has the @JsonSchema annotation
+    if (node.metadata.any((a) => a.name.name == 'JsonSchema')) {
+      shouldGenerateSchema = true;
+    }
     super.visitClassDeclaration(node);
   }
 
   @override
   void visitFieldDeclaration(FieldDeclaration node) {
-    if (node.metadata.any((a) =>
-      a.name.name == 'Field'
-    )) {
-      fields.add(node);
+    // Only process fields if we're in a class with @JsonSchema or fields with @Field annotation
+    if (currentClass != null) {
+      if (shouldGenerateSchema) {
+        // For @JsonSchema classes, include all public fields
+        final fieldName = node.fields.variables.first.name.lexeme;
+        if (!fieldName.startsWith('_')) {
+          fields.add(node);
+        }
+      } else if (node.metadata.any((a) => a.name.name == 'Field')) {
+        // For non-@JsonSchema classes, only include fields with @Field annotation
+        fields.add(node);
+      }
     }
     super.visitFieldDeclaration(node);
   }

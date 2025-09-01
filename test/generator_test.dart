@@ -43,7 +43,7 @@ void main() {
     }
   });
 
-  test('Generator throws exception for dynamic objects', () async {
+  test('Generator skips dynamic objects in @JsonSchema classes', () async {
     final tempDir = Directory.systemTemp.createTempSync('dart_json_schema_test');
     final outputDir = Directory('${tempDir.path}/output');
     
@@ -53,35 +53,42 @@ void main() {
       await testFile.writeAsString('''
 import 'package:dart_json_schema_annotations/dart_json_schema_annotations.dart';
 
+@JsonSchema()
 class DynamicModel {
-  @Field(
-    description: 'A dynamic object field',
-    examples: [
-      {'name': 'John', 'age': 30},
-      {'product': 'Laptop', 'price': 999.99}
-    ]
-  )
-  final dynamic dynamicObject;
+  final int id;
+  final dynamic dynamicObject; // This should be skipped
+  final String name;
 
   const DynamicModel({
+    required this.id,
     required this.dynamicObject,
+    required this.name,
   });
 }
 ''');
 
-      // Expect an exception to be thrown
-      await expectLater(
-        () => JsonSchemaGenerator.generateAllSchemas(
-          inputDir: tempDir.path,
-          outputDir: outputDir.path,
-        ),
-        throwsA(
-          predicate((e) => 
-            e is Exception && 
-            e.toString().contains('Dynamic type is not supported')
-          )
-        )
+      await JsonSchemaGenerator.generateAllSchemas(
+        inputDir: tempDir.path,
+        outputDir: outputDir.path,
       );
+      
+      final schemaFile = File('${outputDir.path}/dynamic_model.schema.json');
+      
+      expect(await schemaFile.exists(), isTrue);
+      
+      final schemaContent = await schemaFile.readAsString();
+      
+      // Check that the schema was generated
+      expect(schemaContent, contains(r'"$schema": "https://json-schema.org/draft/2020-12/schema"'));
+      expect(schemaContent, contains('"title": "DynamicModel"'));
+      expect(schemaContent, contains('"type": "object"'));
+      
+      // Check that non-dynamic fields are included
+      expect(schemaContent, contains('"id"'));
+      expect(schemaContent, contains('"name"'));
+      
+      // Check that dynamic field is not included
+      expect(schemaContent, isNot(contains('dynamicObject')));
       
     } finally {
       if (await tempDir.exists()) {
