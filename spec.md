@@ -67,6 +67,28 @@ class Field {
 }
 ```
 
+### 2. Class-Level @JsonSchema Annotation
+```dart
+@jsonSchema()
+class User {
+  final int id;
+  final String name;
+  // All public fields will be included in schema
+}
+```
+
+### 3. Configuration-Based Schema Generation
+Create a `dart_json_schema.yaml` file to specify which files should be treated as if they have the `@JsonSchema` annotation:
+
+```yaml
+dart_json_schema:
+  include:
+    - lib/models/**/*.dart        # Include all .dart files in lib/models/ and subdirectories
+    - lib/entities/**/*.dart      # Include all .dart files in lib/entities/ and subdirectories
+  exclude:
+    - lib/models/internal/**/*.dart  # Exclude internal models
+```
+
 ### 2. Command-Line Tool
 ```bash
 # Generate JSON schemas for all annotated models

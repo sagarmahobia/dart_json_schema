@@ -9,6 +9,8 @@ A Dart package for generating JSON schemas from Dart model classes using annotat
 - Support for complex types (List, custom objects)
 - Support for optional and required fields
 - Simple `@Field` annotation with just three properties: title, description, and examples
+- Class-level `@JsonSchema` annotation for automatic schema generation
+- **Configuration-based schema generation** - Specify patterns to automatically treat files as if they have the `@JsonSchema` annotation
 - Build runner integration
 
 ## Installation
@@ -193,6 +195,23 @@ Then run:
 ```bash
 dart run build_runner build
 ```
+
+## Configuration-Based Schema Generation
+
+Create a `dart_json_schema.yaml` configuration file to specify which files should be treated as having the `@JsonSchema` annotation:
+
+```yaml
+dart_json_schema:
+  include:
+    - lib/models/**/*.dart        # Include all .dart files in lib/models/ and subdirectories
+    - lib/entities/**/*.dart      # Include all .dart files in lib/entities/ and subdirectories
+  exclude:
+    - lib/models/internal/**/*.dart  # Exclude internal models
+```
+
+With this configuration, all public fields in classes in the specified files will be included in the generated schemas, even without any annotations. This is equivalent to adding the `@JsonSchema` annotation to those classes.
+
+Files that don't match any include patterns will still be processed normally - classes with `@JsonSchema` or `@Field` annotations will generate schemas as before.
 
 ## Generated Schema Example
 

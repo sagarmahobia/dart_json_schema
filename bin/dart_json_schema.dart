@@ -134,11 +134,13 @@ Future<void> handleGenerateCommand(ArgResults results) async {
       await JsonSchemaGenerator.generateAllSchemas(
         inputDir: inputDir,
         outputDir: outputDir,
+        configPath: configPath,
       );
     } else {
       await JsonSchemaGenerator.generateAllSchemas(
         inputDir: inputDir,
         outputDir: outputDir,
+        configPath: configPath,
       );
       print('Schema generation complete.');
     }

@@ -6,11 +6,13 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:path/path.dart' as p;
+import '../config/schema_config.dart';
 
 class JsonSchemaGenerator {
   static Future<void> generateAllSchemas({
     String inputDir = 'lib/',
     String outputDir = 'build/schemas',
+    String configPath = 'dart_json_schema.yaml',
   }) async {
     // Use the output directory directly without adding project name subdirectory
     final actualOutputDir = outputDir;
@@ -27,23 +29,41 @@ class JsonSchemaGenerator {
       await output.create(recursive: true);
     }
 
+    // Load configuration
+    final config = await SchemaConfig.loadFromFile(configPath);
+
     await for (final file in input.list(recursive: true)) {
       if (file is File && file.path.endsWith('.dart')) {
-        final schema = await generateSchemaForFile(file.path);
-        if (schema != null) {
-          final schemaFileName =
-              '${p.basenameWithoutExtension(file.path)}.schema.json';
-          final outputFile = File(p.join(output.path, schemaFileName));
-          final jsonString = JsonEncoder.withIndent('  ').convert(schema);
-          await outputFile.writeAsString(jsonString);
-          print('Generated schema for ${file.path} at ${outputFile.path}');
+        // Check if this file should generate a schema based on configuration
+        final relativePath = p.relative(file.path, from: input.path);
+        if (config.shouldGenerateSchemaForFile(relativePath)) {
+          final schema = await generateSchemaForFile(file.path, useJsonSchema: true);
+          if (schema != null) {
+            final schemaFileName =
+                '${p.basenameWithoutExtension(file.path)}.schema.json';
+            final outputFile = File(p.join(output.path, schemaFileName));
+            final jsonString = JsonEncoder.withIndent('  ').convert(schema);
+            await outputFile.writeAsString(jsonString);
+            print('Generated schema for ${file.path} at ${outputFile.path}');
+          }
+        } else {
+          // Process normally (for @Field annotations or @JsonSchema annotations)
+          final schema = await generateSchemaForFile(file.path);
+          if (schema != null) {
+            final schemaFileName =
+                '${p.basenameWithoutExtension(file.path)}.schema.json';
+            final outputFile = File(p.join(output.path, schemaFileName));
+            final jsonString = JsonEncoder.withIndent('  ').convert(schema);
+            await outputFile.writeAsString(jsonString);
+            print('Generated schema for ${file.path} at ${outputFile.path}');
+          }
         }
       }
     }
   }
 
   static Future<Map<String, dynamic>?> generateSchemaForFile(
-      String filePath) async {
+      String filePath, {bool useJsonSchema = false}) async {
     final absolutePath = p.isRelative(filePath)
         ? p.absolute(filePath)
         : filePath;
@@ -53,7 +73,7 @@ class JsonSchemaGenerator {
       featureSet: FeatureSet.latestLanguageVersion(),
     );
 
-    final classVisitor = _ClassVisitor();
+    final classVisitor = _ClassVisitor(useJsonSchema: useJsonSchema);
     parseResult.unit.visitChildren(classVisitor);
 
     // Only generate schema if the class should generate a schema or has @Field annotations
@@ -248,14 +268,17 @@ class _ClassVisitor extends GeneralizingAstVisitor<void> {
   ClassDeclaration? currentClass;
   final fields = <FieldDeclaration>[];
   bool shouldGenerateSchema = false;
+  final bool useJsonSchema;
+
+  _ClassVisitor({this.useJsonSchema = false});
 
   String? get className => currentClass?.name.toString();
 
   @override
   void visitClassDeclaration(ClassDeclaration node) {
     currentClass = node;
-    // Check if the class has the @JsonSchema annotation
-    if (node.metadata.any((a) => a.name.name == 'JsonSchema')) {
+    // Check if the class has the @JsonSchema annotation or if we're using config-based generation
+    if (useJsonSchema || node.metadata.any((a) => a.name.name == 'JsonSchema')) {
       shouldGenerateSchema = true;
     }
     super.visitClassDeclaration(node);
